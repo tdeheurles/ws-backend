@@ -1,20 +1,22 @@
-# Copy go prog to docker context
-cp ./ws-backend.go ./build/container/
-
-# import names
+# Name it
 . ./build/release.cfg
-
-# artifact tag
-artifact_tag="$servicemajor.$serviceminor.$BUILD_NUMBER"
-
-# PRIVATE
 artifact_name="gcr.io/$projectid/$servicename"
-artifact_name_tagged="$artifact_name:$artifact_tag"
+artifact_tag="$artifact_name:$servicemajor.$serviceminor.$BUILD_NUMBER"
 
-# Build
+
+# Prepare container
+mkdir -p ./build/container
+sed "s/__SERVICEPORT__/$serviceport/g" ./build/template.Dockerfile > ./build/container/Dockerfile
+cp ./ws-backend.go   ./build/container/
 docker build -t $artifact_name ./build/container/
-docker tag $artifact_name $artifact_name_tagged
+docker tag $artifact_name $artifact_tag
+
 
 # Push to Google Cloud Engine
-gcloud docker push $artifact_name
-gcloud docker push $artifact_name_tagged
+# gcloud docker push $artifact_name
+# gcloud docker push $artifact_tag
+
+
+# generate manifests
+rm ./deploy/kubernetes/*.json
+./build/generate_manifests.sh $artifact_tag

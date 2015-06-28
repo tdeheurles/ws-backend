@@ -8,6 +8,6 @@ WORKDIR     /go/src/ws-backend/
 RUN         go get code.google.com/p/go.net/websocket
 RUN         go install
 
-EXPOSE      1234
+EXPOSE      __SERVICEPORT__
 
 CMD         ws-backend
