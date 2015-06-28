@@ -1,5 +1,5 @@
 # Copy go prog to docker context
-cp ./../ws-backend.go .
+cp ./ws-backend.go ./build/container/
 
 # import names
 . ./build/release.cfg
@@ -12,7 +12,7 @@ artifact_name="gcr.io/$projectid/$servicename"
 artifact_name_tagged="$artifact_name:$artifact_tag"
 
 # Build
-docker build -t $artifact_name ./build/
+docker build -t $artifact_name ./build/container/
 docker tag $artifact_name $artifact_name_tagged
 
 # Push to Google Cloud Engine
