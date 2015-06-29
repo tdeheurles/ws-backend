@@ -7,14 +7,14 @@ artifact_tag="$artifact_name:$servicemajor.$serviceminor.$BUILD_NUMBER"
 # Prepare container
 mkdir -p ./build/container
 sed "s/__SERVICEPORT__/$serviceport/g" ./build/template.Dockerfile > ./build/container/Dockerfile
-cp ./ws-backend.go   ./build/container/
+cp ./src/*    ./build/container/
 docker build -t $artifact_name ./build/container/
 docker tag $artifact_name $artifact_tag
 
 
 # Push to Google Cloud Engine
-# gcloud docker push $artifact_name
-# gcloud docker push $artifact_tag
+gcloud docker push $artifact_name
+gcloud docker push $artifact_tag
 
 
 # generate manifests
