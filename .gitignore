@@ -1,1 +1,3 @@
 build/container
+config/localbuild.cfg
+config/localbuildnumber.cfg
